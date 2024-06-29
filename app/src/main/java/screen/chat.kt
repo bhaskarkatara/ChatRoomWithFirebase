@@ -1,6 +1,8 @@
 package screen
 
+import android.content.ContentValues.TAG
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -63,6 +65,7 @@ fun ChatScreen(
             modifier = Modifier.weight(1f)
         )  {
             items(messages) { message ->
+//                Log.d(TAG, "ChatScreen: $message")
                 ChatMessageItem(message =  message.copy(isSentByCurrentUser
                 = message.senderId == messageViewModel.currentUser.value?.email)
                 )
@@ -80,6 +83,7 @@ fun ChatScreen(
                 value = text.value,
                 onValueChange = { text.value = it },
                 textStyle = TextStyle.Default.copy(fontSize = 16.sp),
+
                 modifier = Modifier
                     .weight(1f)
                     .padding(8.dp)
@@ -89,6 +93,7 @@ fun ChatScreen(
                 onClick = {
                     // Send the message when the icon is clicked
                     if (text.value.isNotEmpty()) {
+                        Log.d(TAG, "ChatScreen: $text.value")
                         messageViewModel.sendMessage(text.value.trim())
                         text.value = ""
                     }

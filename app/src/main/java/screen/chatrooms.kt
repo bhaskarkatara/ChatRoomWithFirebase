@@ -91,7 +91,7 @@ fun ChatRoomListScreen(
                             onClick = {
                                 if (name.isNotBlank()) {
                                     showDialog = false
-
+                                    roomViewModel.createRoom(name)
                                 }
                             }
                         ) {
@@ -101,6 +101,7 @@ fun ChatRoomListScreen(
                             onClick = { showDialog = false }
                         ) {
                             Text("Cancel")
+
                         }
                     }
                 })
