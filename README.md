@@ -11,8 +11,14 @@ Here are the Given Steps How to StepUP firebase(Authentication for User) and Clo
 
 
 -> Step1 : Go the the Android Studio -> Tools -> Firebase -> Authentication -> there are various options you can select any of them
+
+
 -> Step2: Add SDK dependecnies( given below there)
+
+
 -> Step3 : Add Cloud FireStore(You can select any of them )
+
 -> Step4 : Add SDK dependecnies( given below there)
+
  Go the firebase Console ( Simply type on google) and add our project there , Get Started with Email Authentication Option
   and same with Cloud FireStore, Change their User Setting(***read and write***) 
