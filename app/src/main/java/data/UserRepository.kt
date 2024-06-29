@@ -29,9 +29,13 @@ class UserRepository(private val auth: FirebaseAuth,
     suspend fun login(email: String, password: String): Result<Boolean> =
         try {
             auth.signInWithEmailAndPassword(email, password).await()
+//            userLogin(false)
+//            Result.Loading(false)
             Result.Success(true)
         } catch (e: Exception) {
-            Log.e(TAG, "Login failed", e)
+//            Log.e(TAG, "Login failed", e)
+//            userLogin(false)
+//            Result.UserLogin(false)
             Result.Error(e)
         }
 
@@ -64,3 +68,6 @@ class UserRepository(private val auth: FirebaseAuth,
     }
 
 }
+//data class userLogin(
+//    val isLoading :Boolean = true
+//)

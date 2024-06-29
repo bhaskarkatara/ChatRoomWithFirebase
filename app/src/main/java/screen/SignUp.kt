@@ -44,7 +44,7 @@ fun SignUpScreen(
     var firstName by remember { mutableStateOf("") }
     var lastName by remember { mutableStateOf("") }
     val result by authViewModel.authResult.observeAsState()
-    val snackbarHostState = remember { SnackbarHostState() }
+//    val snackbarHostState = remember { SnackbarHostState() }
 
     Column(
         modifier = Modifier
@@ -98,20 +98,7 @@ fun SignUpScreen(
             onClick = {
 
                     authViewModel.signUp(email, password, firstName, lastName)
-                    when (result) {
-                        is Success -> {
 
-                        }
-
-                        is Error -> {
-
-
-                        }
-
-                        else -> {
-                            Log.d(TAG, "L3: signup else")
-                        }
-                    }
 
                 email = ""
                 password = ""
@@ -127,6 +114,21 @@ fun SignUpScreen(
 
         }
         Spacer(modifier = Modifier.height(16.dp))
+        when (result) {
+            is Success -> {
+                val context = LocalContext.current
+               Toast.makeText(context,"user SignUp Successful",Toast.LENGTH_LONG).show()
+            }
+
+            is Error -> {
+
+                val context = LocalContext.current
+                Toast.makeText(context,"user SignUp Failed",Toast.LENGTH_LONG).show()
+            }
+
+            else -> {
+            }
+        }
         Text("Already have an account? Sign in.",
             modifier = Modifier.clickable { onNavigateToLogin() }
         )
