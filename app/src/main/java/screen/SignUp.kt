@@ -44,7 +44,6 @@ fun SignUpScreen(
     var firstName by remember { mutableStateOf("") }
     var lastName by remember { mutableStateOf("") }
     val result by authViewModel.authResult.observeAsState()
-//    val snackbarHostState = remember { SnackbarHostState() }
 
     Column(
         modifier = Modifier

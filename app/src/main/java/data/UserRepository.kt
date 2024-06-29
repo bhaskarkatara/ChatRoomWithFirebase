@@ -18,10 +18,8 @@ class UserRepository(private val auth: FirebaseAuth,
             auth.createUserWithEmailAndPassword(email, password).await()
             val user = User(firstName, lastName, email)
             saveUserToFirestore(user)
-
             Result.Success(true)
         } catch (e: Exception) {
-            Log.e(TAG, "Sign-up failed", e)
             Result.Error(e)
         }
 
@@ -29,22 +27,15 @@ class UserRepository(private val auth: FirebaseAuth,
     suspend fun login(email: String, password: String): Result<Boolean> =
         try {
             auth.signInWithEmailAndPassword(email, password).await()
-//            userLogin(false)
-//            Result.Loading(false)
             Result.Success(true)
         } catch (e: Exception) {
-//            Log.e(TAG, "Login failed", e)
-//            userLogin(false)
-//            Result.UserLogin(false)
             Result.Error(e)
         }
 
     private suspend fun saveUserToFirestore(user: User) {
         try {
             firestore.collection("users").document(user.email).set(user).await()
-            Log.d(TAG, "User saved to Firestore: ${user.email}")
         } catch (e: Exception) {
-            Log.e(TAG, "Failed to save user to Firestore", e)
             throw e
         }
     }
@@ -55,7 +46,6 @@ class UserRepository(private val auth: FirebaseAuth,
             val userDocument = firestore.collection("users").document(uid).get().await()
             val user = userDocument.toObject(User::class.java)
             if (user != null) {
-                Log.d("user2","$uid")
                 Result.Success(user)
             } else {
                Result.Error(Exception("User data not found"))
@@ -68,6 +58,3 @@ class UserRepository(private val auth: FirebaseAuth,
     }
 
 }
-//data class userLogin(
-//    val isLoading :Boolean = true
-//)

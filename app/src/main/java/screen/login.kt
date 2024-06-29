@@ -26,6 +26,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import com.example.chatroom.Screen
 import viewmodel.AuthViewModel
 import data.Result
 import data.Result.*
@@ -35,6 +37,7 @@ import kotlin.math.log
 
 @Composable
 fun LoginScreen(
+    navController: NavController,
     authViewModel: AuthViewModel,
     onNavigateToSignUp: () -> Unit,
     onSignInSuccess:()->Unit
@@ -54,6 +57,7 @@ fun LoginScreen(
     ){
         OutlinedTextField(
             value = email,
+            singleLine = true,
             onValueChange = { email = it },
             label = { Text("Email") },
             modifier = Modifier
@@ -73,7 +77,6 @@ fun LoginScreen(
             onClick = {
 
                 authViewModel.login(email, password)
-           // want when user is logging then user can show circularprogressindictar
 
             },
             modifier = Modifier
@@ -85,6 +88,7 @@ fun LoginScreen(
         Spacer(modifier = Modifier.height(16.dp))
         when (result) {
             is Success -> {
+                navController.navigate(Screen.ChatRoomsScreen.route)
                 val context = LocalContext.current
                Toast.makeText(context,"user Login Successful",Toast.LENGTH_LONG).show()
             }

@@ -1,9 +1,11 @@
 package com.example.chatroom
 
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
@@ -26,13 +28,13 @@ import screen.SignUpScreen
 import viewmodel.AuthViewModel
 
 class MainActivity : ComponentActivity() {
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             val navController = rememberNavController()
             val authViewModel: AuthViewModel = viewModel()
             ChatRoomTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
@@ -44,6 +46,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun NavigationGraph(
     navController: NavHostController,
@@ -51,7 +54,7 @@ fun NavigationGraph(
 ) {
     NavHost(
         navController = navController,
-        startDestination = Screen.SignupScreen.route
+        startDestination = Screen.LoginScreen.route
     ) {
         composable(Screen.SignupScreen.route) {
             SignUpScreen(
@@ -62,9 +65,10 @@ fun NavigationGraph(
         composable(Screen.LoginScreen.route) {
             LoginScreen(
                 authViewModel = authViewModel,
+                navController = navController,
                 onNavigateToSignUp = { navController.navigate(Screen.SignupScreen.route) }
             ) {
-                navController.navigate(Screen.ChatRoomsScreen.route)
+
             }
         }
 

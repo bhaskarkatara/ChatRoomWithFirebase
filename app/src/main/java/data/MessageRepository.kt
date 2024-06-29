@@ -7,7 +7,6 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
-//import kotlin.Result
 
 class MessageRepository(private val firestore: FirebaseFirestore) {
 
@@ -15,7 +14,6 @@ class MessageRepository(private val firestore: FirebaseFirestore) {
         Log.d(TAG, "Sending message to room: $roomId, message: $message")
         firestore.collection("rooms").document(roomId)
             .collection("messages").add(message).await()
-        Log.d(TAG, "Message sent successfully")
         Result.Success(Unit)
 
     } catch (e: Exception) {
