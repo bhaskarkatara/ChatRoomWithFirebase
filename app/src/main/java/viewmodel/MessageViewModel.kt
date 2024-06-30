@@ -43,9 +43,7 @@ class MessageViewModel : ViewModel() {
     }
 
     fun sendMessage(text: String) {
-        Log.d(TAG, "Sending message: $text")
         if (_currentUser.value != null) {
-            Log.d(TAG, "oye: $text")
             val message = Message(
                 senderFirstName = _currentUser.value!!.firstName,
                 senderId = _currentUser.value!!.email,
@@ -53,15 +51,11 @@ class MessageViewModel : ViewModel() {
             )
             viewModelScope.launch {
                 when (messageRepository.sendMessage(_roomId.value.toString(), message)) {
-                    is Success -> Log.d(TAG, "Message sent successfully: msg sent yes")
+                    is Success -> {}
                     is Error -> {
-                        // Handle error
-                        Log.e(TAG, "Error sending message: no nhi gya")
                     }
                 }
             }
-        }else{
-            Log.d(TAG, "error in message: error aagyi ")
         }
     }
 
@@ -75,12 +69,10 @@ class MessageViewModel : ViewModel() {
     private fun loadCurrentUser() {
         viewModelScope.launch {
             when (val result = userRepository.getCurrentUser()) {
-                is Success -> {
-                    Log.d(TAG, "Current user loaded successfully: ${result.data}")
+                is Success ->
                     _currentUser.value = result.data
-                }
+
                 is Error -> {
-                    Log.e(TAG, "Error loading current user", result.exception)
                 }
 
             }
