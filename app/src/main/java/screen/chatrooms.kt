@@ -49,6 +49,8 @@ fun ChatRoomListScreen(
 
      val showExitDialog = remember { mutableStateOf(false) }
      val context = LocalContext.current
+
+    // this is for backHandler
     if(showExitDialog.value){
         ExitConfirmationDialog(
             onConfirm = {
@@ -57,7 +59,6 @@ fun ChatRoomListScreen(
             onDismiss = { showExitDialog.value = false }
         )
     }
-    else {
 
 
         Column(
@@ -88,7 +89,7 @@ fun ChatRoomListScreen(
             }
 
 
-            if (showExitDialog.value) {
+            if (showDialog) {
                 AlertDialog(onDismissRequest = { showDialog = true },
                     title = { Text("Create a new room") },
                     text = {
@@ -131,7 +132,7 @@ fun ChatRoomListScreen(
             showExitDialog.value = true
         }
     }
-}
+
 
 @Composable
 fun ExitConfirmationDialog(onConfirm: () -> Unit, onDismiss: () -> Unit) {
