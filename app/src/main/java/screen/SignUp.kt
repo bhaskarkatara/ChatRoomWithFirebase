@@ -53,6 +53,7 @@ fun SignUpScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ){
         OutlinedTextField(
+            singleLine = true,
             value = email,
             onValueChange = { email = it },
             label = { Text("Email") },
@@ -123,11 +124,14 @@ fun SignUpScreen(
 
                 val context = LocalContext.current
                 Toast.makeText(context,"user SignUp Failed",Toast.LENGTH_LONG).show()
+                Log.d(TAG, "SignUpScreen: why this ")
             }
 
             else -> {
             }
         }
+        Result.success(false)
+        
         Text("Already have an account? Sign in.",
             modifier = Modifier.clickable { onNavigateToLogin() }
         )
