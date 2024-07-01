@@ -39,7 +39,7 @@ import kotlin.math.log
 fun LoginScreen(
     navController: NavController,
     authViewModel: AuthViewModel,
-    onNavigateToSignUp: () -> Unit,
+    onNavigateToSignUp: () -> Unit, // this is the lambda function Call this function to navigate to the sign up screen
     onSignInSuccess:()->Unit
 ) {
     var email by remember { mutableStateOf("") }

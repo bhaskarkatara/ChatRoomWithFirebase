@@ -16,18 +16,22 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.filled.Send
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -41,6 +45,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.room.util.copy
 import com.example.chatroom.R
 import data.Message
+import kotlinx.coroutines.launch
 import viewmodel.MessageViewModel
 import java.time.Instant
 import java.time.LocalDateTime
@@ -57,6 +62,10 @@ fun ChatScreen(
     val messages by messageViewModel.messages.observeAsState(emptyList())
     messageViewModel.setRoomId(roomId)
     val text = remember { mutableStateOf("") }
+    val coroutineScope = rememberCoroutineScope()
+     val listState = rememberLazyListState()
+    messageViewModel.setRoomId(roomId)
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -64,10 +73,12 @@ fun ChatScreen(
     ) {
         // Display the chat messages
         LazyColumn(
+            state = listState,
             modifier = Modifier.weight(1f)
         )  {
+
             items(messages) { message ->
-//                Log.d(TAG, "ChatScreen: $message")
+
                 ChatMessageItem(message =  message.copy(isSentByCurrentUser
                 = message.senderId == messageViewModel.currentUser.value?.email)
                 )
@@ -89,7 +100,6 @@ fun ChatScreen(
                     color = Color.Red
                 ),
                 cursorBrush = SolidColor(Color.White),
-//               textCo
                 modifier = Modifier
                     .weight(1f)
                     .padding(8.dp).border(1.dp,color = Color.Blue)
@@ -100,15 +110,20 @@ fun ChatScreen(
                 onClick = {
                     // Send the message when the icon is clicked
                     if (text.value.isNotEmpty()) {
-                        Log.d(TAG, "ChatScreen: $text.value")
                         messageViewModel.sendMessage(text.value.trim())
                         text.value = ""
                     }
                     messageViewModel.loadMessages()
                 }
             ) {
-                Icon(imageVector = Icons.Default.Send, contentDescription = "Send")
+                Icon(imageVector = Icons.AutoMirrored.Filled.Send, contentDescription = "Send")
             }
+        }
+    }
+    //     Scroll to the latest message when messages change
+    LaunchedEffect(messages) {
+        if (messages.isNotEmpty()) {
+            listState.scrollToItem(messages.size - 1)
         }
     }
 }
@@ -145,7 +160,7 @@ fun ChatMessageItem(message: Message) {
             )
         )
         Text(
-            text = formatTimestamp(message.timestamp), // Replace with actual timestamp logic
+            text = formatTimestamp(message.timestamp),
             style = TextStyle(
                 fontSize = 12.sp,
                 color = Color.Gray
